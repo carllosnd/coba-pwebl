@@ -32,7 +32,10 @@
                     <th>{{ $no++ }}</th>
                     <th>{{ $book->code }}</th>
                     <th>{{ $book->title }}</th>
-                    <th></th>
+                    <th>
+                        <a href="{{route('books.edit',[$book->id])}}">Edit</a>
+                        <a href="{{route('books.del.confirm',[$book->id])}}">Hapus</a>
+                    </th>
                 </tr>
             @empty
                 <tr>
