@@ -5,7 +5,7 @@ use App\Http\Controllers\CobaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout.main');
 });
 
 Route::get('/test', function () {

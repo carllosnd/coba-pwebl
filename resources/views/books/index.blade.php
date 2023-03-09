@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Daftar Buku</title>
-</head>
+@section('title', 'Data Buku')
 
-<body>
-    <h1>Daftar Buku</h1>
+@section('content')
     @if ($message = Session::get('sukses'))
-    {{$message}}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Sukses!</h5>
+            {{ $message }}
+        </div>
     @endif
-    <a href="{{route('books.create')}}">Tambah Buku</a>
-    <table border="1" width=100%>
+    <a class="btn btn-primary mb-2" href="{{ route('books.create') }}">Tambah Buku</a>
+    <table class="table" width=100%>
         <thead>
             <tr>
                 <th>No</th>
@@ -33,8 +30,12 @@
                     <th>{{ $book->code }}</th>
                     <th>{{ $book->title }}</th>
                     <th>
-                        <a href="{{route('books.edit',[$book->id])}}">Edit</a>
-                        <a href="{{route('books.del.confirm',[$book->id])}}">Hapus</a>
+                        <a class="btn btn-dark btn-sm" href="{{ route('books.edit', [$book->id]) }}">
+                            <i class="fa fa-pencil-alt"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm" href="{{ route('books.del.confirm', [$book->id]) }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </th>
                 </tr>
             @empty
@@ -43,7 +44,5 @@
                 </tr>
             @endforelse
         </tbody>
-        </table>
-</body>
-
-</html>
+    </table>
+@endsection
