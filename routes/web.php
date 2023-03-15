@@ -36,4 +36,3 @@ Route::get('books/{bookId}/delete-confirm',[BookController::class, 'confirmDelet
 Route::post('books/delete', [BookController::class, 'delete'])->name('books.delete');
 Route::get('books/{bookId}/edit',[BookController::class, 'edit'])->name('books.edit');
 Route::post('books/update', [BookController::class, 'update'])->name('books.update');
-
