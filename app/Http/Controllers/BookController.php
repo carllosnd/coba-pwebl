@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -12,10 +13,10 @@ class BookController extends Controller
     public function index()
     {
 
-        $books = Book::when(request('search'), function ($query) {
+        $books = Book::query()->with('publisher','authors')->when(request('search'), function ($query) {
             $searchTerm = '%' . request('search') . '%';
             $query->where('title', 'LIKE', $searchTerm)->orWhere('code', 'LIKE', $searchTerm);
-        })->paginate(2);
+        })->paginate(10);
 
         return view('books/index', [
             'books' => $books
@@ -25,21 +26,27 @@ class BookController extends Controller
     #function untuk menampilkan form tambah baru
     public function create()
     {
-        return view('books/form');
+        $publishers = Publisher::all();
+        return view('books/form', [
+            'publishers' => $publishers
+        ]);
     }
 
     #fungsi untuk memproses buku kedalam database
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'code' => 'required|max:4',
-            'title' => 'required|max:100'
+            'code' => 'required|max:4|unique:books,code',
+            'title' => 'required|max:100',
+            'id_publisher' => 'required'
         ]);
         $code = $request->code;
         $title = $request->title;
+        $idPublisher = $request->id_publisher;
         Book::create([
             'code' => $code,
-            'title' => $title
+            'title' => $title,
+            'id_publisher' => $idPublisher
         ]);
         #untuk mengembalikan ke halaman yang dituju
         return redirect(route('books.index'))->with('sukses', 'buku sukses di tambah');
@@ -66,8 +73,10 @@ class BookController extends Controller
     {
         #ambil data buku by Id
         $book = Book::findOrFail($bookId);
+        $publishers = Publisher::all();
         return view('books/form-update', [
-            'book' => $book
+            'book' => $book,
+            'publishers' => $publishers
         ]);
     }
 

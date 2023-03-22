@@ -28,6 +28,7 @@
                         <th>No</th>
                         <th>Kode</th>
                         <th>Judul</th>
+                        <th>Jumlah Penulis</th>
                         <th>Publisher</th>
                         <th>Aksi</th>
                     </tr>
@@ -41,6 +42,7 @@
                             <th>{{ $no++ }}</th>
                             <th>{{ $book->code }}</th>
                             <th>{{ $book->title }}</th>
+                            <th>{{ $book->authors->count() }}Orang</th>
                             <th>{{ $book->publisher->name }}</th>
                             <th>
                                 <a class="btn btn-dark btn-sm" href="{{ route('books.edit', [$book->id]) }}">
