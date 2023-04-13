@@ -39,6 +39,24 @@ Route::post('books/delete', [BookController::class, 'delete'])->name('books.dele
 Route::get('books/{bookId}/edit', [BookController::class, 'edit'])->name('books.edit');
 Route::post('books/update', [BookController::class, 'update'])->name('books.update');
 
+#crud publisher books
+Route::get('/publishers', [BookController::class, 'view'])->name('publishers.view');
+Route::get('/publishers/addPublisher', [BookController::class, 'addPublisher'])->name('publishers.addPublisher');
+Route::post('/publishers/viewPublisher', [BookController::class, 'viewPublisher'])->name('publishers.viewPublisher');
+Route::get('publishers/{publisherId}/editPublisher', [BookController::class, 'editPublisher'])->name('publishers.editPublisher');
+Route::post('publishers/updatePublisher', [BookController::class, 'updatePublisher'])->name('publishers.updatePublisher');
+Route::get('publishers/{publisherId}/confirm-deletePublisher', [BookController::class, 'confirmDeletePublisher'])->name('publishers.del.confirmPublisher');
+Route::post('publishers/deletePublisher', [BookController::class, 'deletePublisher'])->name('publishers.deletePublisher');
+
+#crud author books
+Route::get('/authors', [BookController::class, 'viewAuthor'])->name('authors.viewAuthor');
+Route::get('/authors/addAuthor', [BookController::class, 'addAuthor'])->name('authors.addAuthor');
+Route::post('/authors/viewAddingAuthor', [BookController::class, 'viewAddingAuthor'])->name('authors.viewAddingAuthor');
+Route::get('authors/{authorId}/editAuthor', [BookController::class, 'editAuthor'])->name('authors.editAuthor');
+Route::post('authors/updateAuthor', [BookController::class, 'updateAuthor'])->name('authors.updateAuthor');
+Route::get('authors/{authorId}/confirm-deleteAuthor', [BookController::class, 'confirmDeleteAuthor'])->name('authors.del.confirmAuthor');
+Route::post('authors/deleteAuthor', [BookController::class, 'deleteAuthor'])->name('authors.deleteAuthor');
+
 Route::get('/coba-model', function () {
     $books = Book::with('publisher')->get();
     foreach ($books as $book) {
