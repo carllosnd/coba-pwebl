@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\BookAuthor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,15 @@ class BookController extends Controller
         return view('books/index', [
             'books' => $books
         ]);
+    }
+
+    #fungsi untuk mengekspor data ke pdf
+    public function print(){
+        $books = Book::all();
+        $filename = "books_" . date('Y-m-d-H-i-s') . ".pdf";
+        $pdf = Pdf::loadView('books/print',['books' => $books]);
+        $pdf->setPaper('A4','portrait');
+        return $pdf->stream($filename);
     }
 
     #function untuk menampilkan form tambah baru
