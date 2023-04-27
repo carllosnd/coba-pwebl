@@ -39,6 +39,7 @@ Route::post('books/delete', [BookController::class, 'delete'])->name('books.dele
 Route::get('books/{bookId}/edit', [BookController::class, 'edit'])->name('books.edit');
 Route::post('books/update', [BookController::class, 'update'])->name('books.update');
 Route::get('/books/print', [BookController::class, 'print'])->name('books.print');
+Route::get('/books/export/excel', [BookController::class, 'excel'])->name('books.export.excel');
 
 #crud publisher books
 Route::get('/publishers', [BookController::class, 'view'])->name('publishers.view');

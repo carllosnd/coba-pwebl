@@ -12,6 +12,7 @@
     @endif
     <a class="btn btn-primary mb-2" href="{{ route('books.create') }}">Tambah Buku</a>
     <a target="_blank" class="btn btn-danger mb-2" href="{{ route('books.print') }}">Ekspor PDF</a>
+    <a target="_blank" class="btn btn-success mb-2" href="{{ route('books.export.excel') }}">Ekspor Excel</a>
 
     <div class="card">
         <div class="card-header">

@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Export\ExportBooks;
 
 class BookController extends Controller
 {
@@ -35,6 +37,10 @@ class BookController extends Controller
         $pdf = Pdf::loadView('books/print',['books' => $books]);
         $pdf->setPaper('A4','portrait');
         return $pdf->stream($filename);
+    }
+
+    public function excel(){
+        return Excel::download(new ExportBooks, 'books.xlsx');
     }
 
     #function untuk menampilkan form tambah baru
