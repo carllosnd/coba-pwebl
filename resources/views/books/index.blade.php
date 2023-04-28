@@ -11,14 +11,14 @@
         </div>
     @endif
     <a class="btn btn-primary mb-2" href="{{ route('books.create') }}">Tambah Buku</a>
-    <a target="_blank" class="btn btn-danger mb-2" href="{{ route('books.print') }}">Ekspor PDF</a>
+    <a target="_blank" class="btn btn-danger mb-2" href="{{ route('books.print') }}?search={{old('search')}}">Ekspor PDF</a>
     <a target="_blank" class="btn btn-success mb-2" href="{{ route('books.export.excel') }}">Ekspor Excel</a>
 
     <div class="card">
         <div class="card-header">
             <div class="card-tools">
                 <form action="">
-                    <input type="text" placeholder="Cari Buku" name="search" class="form-control" id="" />
+                    <input type="text" placeholder="Cari Buku" name="search" class="form-control" value="{{ old('search')}}" id="" />
                 </form>
             </div>
         </div>
@@ -30,7 +30,7 @@
                         <th>No</th>
                         <th>Kode</th>
                         <th>Judul</th>
-                        <th>Jumlah Penulis</th>
+                        <th>Nama Penulis</th>
                         <th>Publisher</th>
                         <th>Aksi</th>
                     </tr>
@@ -46,7 +46,7 @@
                             <th>{{ $book->title }}</th>
                             <th>
                                 @foreach ($book->authors as $author)
-                                    {{ $author->name }}<br/>
+                                    {{ $author->name }}<br />
                                 @endforeach
                                 {{-- {{ $book->authors->count() }} Orang --}}
                             </th>
@@ -57,6 +57,10 @@
                                 </a>
                                 <a class="btn btn-danger btn-sm" href="{{ route('books.del.confirm', [$book->id]) }}">
                                     <i class="fa fa-trash"></i>
+                                </a>
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                    href="{{ route('books.print.detail', [$book->id]) }}">
+                                    <i class="fa fa-file-pdf"></i>
                                 </a>
                             </th>
                         </tr>

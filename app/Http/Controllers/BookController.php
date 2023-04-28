@@ -20,26 +20,58 @@ class BookController extends Controller
     public function index()
     {
 
-        $books = Book::query()->with('publisher','authors')->when(request('search'), function ($query) {
-            $searchTerm = '%' . request('search') . '%';
-            $query->where('title', 'LIKE', $searchTerm)->orWhere('code', 'LIKE', $searchTerm);
-        })->paginate(10);
-
+        $books = Book::query()
+            ->with('publisher', 'authors')
+            ->when(request('search'), function ($query) {
+                $searchTerm = '%' . request('search') . '%';
+                $query->where('title', 'LIKE', $searchTerm)
+                    ->orWhere('code', 'LIKE', $searchTerm)
+                    ->orWhereHas('publisher', function ($query) use ($searchTerm) {
+                        $query->where('name', 'LIKE', $searchTerm);
+                    })
+                    ->orWhereHas('authors', function ($query) use ($searchTerm) {
+                        $query->where('name', 'LIKE', $searchTerm);
+                    });
+            })->paginate(10);
+        session()->flashInput(request()->input());
         return view('books/index', [
             'books' => $books
         ]);
     }
 
     #fungsi untuk mengekspor data ke pdf
-    public function print(){
-        $books = Book::all();
+    public function print()
+    {
+        $books = Book::query()
+            ->with('publisher', 'authors')
+            ->when(request('search'), function ($query) {
+                $searchTerm = '%' . request('search') . '%';
+                $query->where('title', 'LIKE', $searchTerm)
+                    ->orWhere('code', 'LIKE', $searchTerm)
+                    ->orWhereHas('publisher', function ($query) use ($searchTerm) {
+                        $query->where('name', 'LIKE', $searchTerm);
+                    })
+                    ->orWhereHas('authors', function ($query) use ($searchTerm) {
+                        $query->where('name', 'LIKE', $searchTerm);
+                    });
+            })->get();
         $filename = "books_" . date('Y-m-d-H-i-s') . ".pdf";
-        $pdf = Pdf::loadView('books/print',['books' => $books]);
-        $pdf->setPaper('A4','portrait');
+        $pdf = Pdf::loadView('books/print', ['books' => $books]);
+        $pdf->setPaper('A4', 'portrait');
         return $pdf->stream($filename);
     }
 
-    public function excel(){
+    public function printDetail($bookId)
+    {
+        $book = Book::findOrFail($bookId);
+        $filename = "book_" . $book->code . "_" . date('Y-m-d H:i:s') . ".pdf";
+        $pdf = Pdf::loadView('books/printDetail', ['book' => $book]);
+        $pdf->setPaper('A4', 'potrait');
+        return $pdf->stream($filename);
+    }
+
+    public function excel()
+    {
         return Excel::download(new ExportBooks, 'books.xlsx');
     }
 
@@ -58,7 +90,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         DB::BeginTransaction();
-        try{
+        try {
 
             $validate = $request->validate([
                 'code' => 'required|max:4|unique:books,code',
@@ -75,8 +107,8 @@ class BookController extends Controller
             ]);
             foreach ($request->author as $authorId) {
                 BookAuthor::create([
-                    'id_book' =>$book->id,
-                    'id_author'=>$authorId
+                    'id_book' => $book->id,
+                    'id_author' => $authorId
                 ]);
             }
             DB::commit();
