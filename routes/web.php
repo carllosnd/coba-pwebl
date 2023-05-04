@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CobaController;
+use App\Mail\TestMail;
 use App\Models\Book;
 use App\Models\Publisher;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -59,6 +61,11 @@ Route::get('authors/{authorId}/editAuthor', [BookController::class, 'editAuthor'
 Route::post('authors/updateAuthor', [BookController::class, 'updateAuthor'])->name('authors.updateAuthor');
 Route::get('authors/{authorId}/confirm-deleteAuthor', [BookController::class, 'confirmDeleteAuthor'])->name('authors.del.confirmAuthor');
 Route::post('authors/deleteAuthor', [BookController::class, 'deleteAuthor'])->name('authors.deleteAuthor');
+
+#email
+Route::get('/mail/test',function(){
+    Mail::to('xodabi7530@in2reach.com')->send(new TestMail());
+});
 
 Route::get('/coba-model', function () {
     $books = Book::with('publisher')->get();
