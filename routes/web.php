@@ -23,9 +23,19 @@ Route::get('produk/baru', function () {
     echo "Ini adalah halaman produk";
 });
 
-#login route
+#Register Route
+Route::get('register', function() {
+    return view('login.register');
+})->name('register');
+Route::post('register',[LoginController::class, 'prosesRegister'])->name('register.proses');
+Route::get('register/verify', [LoginController::class, 'registerVerify'])->name('register.verify');
+
+#Login Route
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login/verify', [LoginController::class, 'verify'])->name('login.verify');
+
+#Logout Route
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 #Route yang harus login
 Route::group(['middleware' => 'pwl.auth'], function () {

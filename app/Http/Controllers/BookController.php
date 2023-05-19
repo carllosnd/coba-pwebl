@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Export\ExportBooks;
 
-class BookController extends Controller
+class BookController extends BaseController
 {
     #fungsi untuk menampilkan semua data buku
     public function index()
@@ -78,6 +78,7 @@ class BookController extends Controller
     #function untuk menampilkan form tambah baru
     public function create()
     {
+        $this->adminAndSuperAdminOnly();
         $publishers = Publisher::all();
         $authors = Author::all();
         return view('books/form', [

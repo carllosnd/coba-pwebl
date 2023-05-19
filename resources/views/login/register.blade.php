@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PWL | Log in</title>
+    <title>PWL | Register New User</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -25,15 +25,23 @@
                 <a href="#" class="h1"><b>PWL</b>UKRIM</a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Silahkan Login</p>
+                <p class="login-box-msg">Register New User</p>
                 @if (\Session::has('gagal'))
                     <div class="alert alert-danger">
                         <p>{{ \Session::get('gagal') }}</p>
                     </div>
                 @endif
 
-                <form method="post" action="{{ route('login.verify') }}">
+                <form method="post" action="{{ route('register') }}">
                     @csrf
+                    <div class="input-group mb-3">
+                        <input type="text" name="name" class="form-control" placeholder="Name">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="input-group mb-3">
                         <input type="email" name="email" class="form-control" placeholder="Email">
                         <div class="input-group-append">
@@ -55,7 +63,7 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -65,12 +73,12 @@
                 </div>
                 <!-- /.social-auth-links -->
 
-                <p class="mb-1">
+                {{-- <p class="mb-1">
                     <a href="#">I forgot my password</a>
                 </p>
                 <p class="mb-0">
-                    <a href="{{ route('register')}}" class="text-center">Register New User</a>
-                </p>
+                    <a href="#" class="text-center">Register a new membership</a>
+                </p> --}}
             </div>
             <!-- /.card-body -->
         </div>
