@@ -3,13 +3,12 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CobaController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Mail\TestMail;
 use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::get('/test', function () {
     echo "Hello world";
@@ -33,6 +32,14 @@ Route::get('register/verify', [LoginController::class, 'registerVerify'])->name(
 #Login Route
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login/verify', [LoginController::class, 'verify'])->name('login.verify');
+
+#Forget Password Route
+Route::group(['prefix'=>'forgot-password'], function () {
+    Route::get('/',[ResetPasswordController::class,'index'])->name('fp');
+    Route::post('/reset',[ResetPasswordController::class,'reset'])->name('fp.reset');
+    Route::get('/new-password',[ResetPasswordController::class,'newPasswordForm'])->name('fp.new.form');
+    Route::post('/new-password',[ResetPasswordController::class,'newPasswordProses'])->name('fp.new.proses');
+});
 
 #Logout Route
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
